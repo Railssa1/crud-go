@@ -1,0 +1,10 @@
+### Cria um usuário
+POST http://localhost:8080/v1/user
+Accept: application/json
+
+{
+    "email": "teste@gmail.com",
+    "password": "123456",
+    "name": "teste",
+    "age": "21"
+}

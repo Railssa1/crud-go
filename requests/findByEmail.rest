@@ -1,0 +1,3 @@
+### Obtém usuário por Email
+GET http://localhost:8080/v1/user/email/teste@gmail.com
+Accept: application/json
