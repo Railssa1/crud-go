@@ -3,8 +3,8 @@ POST http://localhost:8080/v1/user
 Accept: application/json
 
 {
-    "email": "teste@gmail.com",
+    "email": "raissa@teste.com.br",
     "password": "123456",
-    "name": "teste",
-    "age": "21"
+    "name": "Raissa",
+    "age": 21
 }
