@@ -5,6 +5,7 @@ import (
 
 	"github.com/Railssa1/crud-go/src/config/logger"
 	"github.com/Railssa1/crud-go/src/config/validation"
+	"github.com/Railssa1/crud-go/src/domain"
 	"github.com/Railssa1/crud-go/src/models"
 	"github.com/gin-gonic/gin"
 )
@@ -20,14 +21,12 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
-	userCreate := models.UserResponse{
-		Id:    1,
-		Email: userRequest.Email,
-		Name:  userRequest.Name,
-		Age:   userRequest.Age,
+	userDomain := domain.NewUserDomain(userRequest.Email, userRequest.Password, userRequest.Name, userRequest.Age)
+	if err := userDomain.CreateUser(); err != nil {
+		c.JSON(err.Code, err.Message)
+		return
 	}
-
 	logger.Info("User created successfully")
 
-	c.JSON(http.StatusOK, userCreate)
+	c.JSON(http.StatusOK, userDomain)
 }

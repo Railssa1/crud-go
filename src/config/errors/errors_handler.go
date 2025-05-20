@@ -1,4 +1,4 @@
-package config
+package errors_api
 
 import "net/http"
 

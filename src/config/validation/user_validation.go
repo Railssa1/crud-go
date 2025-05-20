@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 
-	config "github.com/Railssa1/crud-go/src/config/errors"
+	errors_api "github.com/Railssa1/crud-go/src/config/errors"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/locales/en"
 	ut "github.com/go-playground/universal-translator"
@@ -29,7 +29,7 @@ func init() {
 }
 
 // Função responsável por validar os erros
-func ValidateUserError(err error) *config.ApiErrors {
+func ValidateUserError(err error) *errors_api.ApiErrors {
 	// Valida se o campo enviado é o tipo correto
 	var jsonErr *json.UnmarshalTypeError
 
@@ -37,12 +37,12 @@ func ValidateUserError(err error) *config.ApiErrors {
 	var jsonValidationError validator.ValidationErrors
 
 	if errors.As(err, &jsonErr) {
-		return config.NewBadRequestError("Invalid field type")
+		return errors_api.NewBadRequestError("Invalid field type")
 	} else if errors.As(err, &jsonValidationError) {
-		errorCauses := []config.Causes{}
+		errorCauses := []errors_api.Causes{}
 
 		for _, e := range err.(validator.ValidationErrors) {
-			cause := config.Causes{
+			cause := errors_api.Causes{
 				Message: e.Translate(translator),
 				Field:   e.Field(),
 			}
@@ -50,8 +50,8 @@ func ValidateUserError(err error) *config.ApiErrors {
 			errorCauses = append(errorCauses, cause)
 		}
 
-		return config.NewBadRequestValidationError("Some fields are invalid", errorCauses)
+		return errors_api.NewBadRequestValidationError("Some fields are invalid", errorCauses)
 	} else {
-		return config.NewBadRequestError("Error trying to convert fields")
+		return errors_api.NewBadRequestError("Error trying to convert fields")
 	}
 }
