@@ -3,45 +3,52 @@ package domain
 import (
 	"crypto/md5"
 	"encoding/hex"
-	"fmt"
-
-	errors_api "github.com/Railssa1/crud-go/src/config/errors"
-	"github.com/Railssa1/crud-go/src/config/logger"
 )
 
+type UserDomainInterface interface {
+	GetEmail() string
+	GetPassword() string
+	GetName() string
+	GetAge() int8
+
+	EncryptPassword()
+}
+
 func NewUserDomain(email, password, name string, age int8) UserDomainInterface {
-	return &UserDomain{
-		Email:    email,
-		Password: password,
-		Name:     name,
-		Age:      age,
+	return &userDomain{
+		email:    email,
+		password: password,
+		name:     name,
+		age:      age,
 	}
 }
 
-type UserDomain struct {
-	Email    string
-	Password string
-	Name     string
-	Age      int8
+type userDomain struct {
+	email    string
+	password string
+	name     string
+	age      int8
 }
 
-func (ud *UserDomain) EncryptPassword() {
+func (ud *userDomain) GetEmail() string {
+	return ud.email
+}
+
+func (ud *userDomain) GetPassword() string {
+	return ud.password
+}
+
+func (ud *userDomain) GetName() string {
+	return ud.name
+}
+
+func (ud *userDomain) GetAge() int8 {
+	return ud.age
+}
+
+func (ud *userDomain) EncryptPassword() {
 	hash := md5.New()
 	defer hash.Reset()
-	hash.Write([]byte(ud.Password))
-	ud.Password = hex.EncodeToString(hash.Sum(nil))
-}
-
-type UserDomainInterface interface {
-	CreateUser() *errors_api.ApiErrors
-}
-
-func (ud *UserDomain) CreateUser() *errors_api.ApiErrors {
-	logger.Info("Init CreateUser domain")
-
-	ud.EncryptPassword()
-
-	fmt.Println(ud)
-
-	return nil
+	hash.Write([]byte(ud.password))
+	ud.password = hex.EncodeToString(hash.Sum(nil))
 }
