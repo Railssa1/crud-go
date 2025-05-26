@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/Railssa1/crud-go/routes"
+	"github.com/Railssa1/crud-go/src/config/database/mongodb"
 	"github.com/Railssa1/crud-go/src/controller"
 	"github.com/Railssa1/crud-go/src/service"
 	"github.com/gin-gonic/gin"
@@ -11,6 +12,9 @@ import (
 
 func main() {
 	app := gin.Default()
+
+	// Conectando ao banco de dados
+	mongodb.InitConnection()
 
 	// Iniciando service
 	service := service.NewUserDomainService()
