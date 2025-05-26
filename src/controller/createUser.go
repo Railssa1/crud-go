@@ -6,12 +6,13 @@ import (
 	"github.com/Railssa1/crud-go/src/config/logger"
 	"github.com/Railssa1/crud-go/src/config/validation"
 	"github.com/Railssa1/crud-go/src/domain"
+	"github.com/Railssa1/crud-go/src/dto"
 	"github.com/Railssa1/crud-go/src/models"
-	"github.com/Railssa1/crud-go/src/service"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
-func CreateUser(c *gin.Context) {
+func (uc userControllerInterface) CreateUser(c *gin.Context) {
 	logger.Info("Init CreateUser controller")
 	var userRequest models.UserRequest
 
@@ -24,12 +25,13 @@ func CreateUser(c *gin.Context) {
 
 	userDomain := domain.NewUserDomain(userRequest.Email, userRequest.Password, userRequest.Name, userRequest.Age)
 
-	service := service.NewUserDomainService()
-	if err := service.CreateUser(userDomain); err != nil {
+	if err := uc.service.CreateUser(userDomain); err != nil {
 		c.JSON(err.Code, err.Message)
 		return
 	}
-	logger.Info("User created successfully")
 
-	c.JSON(http.StatusOK, userDomain)
+	userResponse := dto.ConvertDomainToResponse(userDomain)
+	logger.Info("User created successfully", zap.Any("userResponse", userResponse))
+
+	c.JSON(http.StatusOK, userResponse)
 }

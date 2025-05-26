@@ -6,10 +6,10 @@ import (
 )
 
 // Função responsável por inicializar rotas da aplicação
-func InitRoutes(r *gin.RouterGroup) {
-	r.GET("/v1/user/id/:id", controller.FindUserById)
-	r.GET("/v1/user/email/:email", controller.FindUserByEmail)
-	r.POST("/v1/user", controller.CreateUser)
-	r.PUT("/v1/user", controller.UpdateUser)
-	r.DELETE("/v1/user/:id", controller.DeleteUser)
+func InitRoutes(r *gin.RouterGroup, userController controller.UserControllerInterface) {
+	r.GET("/v1/user/id/:id", userController.FindUserById)
+	r.GET("/v1/user/email/:email", userController.FindUserByEmail)
+	r.POST("/v1/user", userController.CreateUser)
+	r.PUT("/v1/user", userController.UpdateUser)
+	r.DELETE("/v1/user/:id", userController.DeleteUser)
 }
