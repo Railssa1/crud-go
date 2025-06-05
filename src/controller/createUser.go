@@ -25,13 +25,13 @@ func (uc userControllerInterface) CreateUser(c *gin.Context) {
 
 	userDomain := domain.NewUserDomain(userRequest.Email, userRequest.Password, userRequest.Name, userRequest.Age)
 
-	if err := uc.service.CreateUser(userDomain); err != nil {
+	response, err := uc.service.CreateUser(userDomain)
+	if err != nil {
 		c.JSON(err.Code, err.Message)
 		return
 	}
 
-	userResponse := dto.ConvertDomainToResponse(userDomain)
-	logger.Info("User created successfully", zap.Any("userResponse", userResponse))
+	logger.Info("User created successfully", zap.Any("userResponse", response))
 
-	c.JSON(http.StatusOK, userResponse)
+	c.JSON(http.StatusOK, dto.ConvertDomainToResponse(response))
 }

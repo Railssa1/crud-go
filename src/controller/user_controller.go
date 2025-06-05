@@ -7,7 +7,7 @@ import (
 
 func NewUserController(service service.UserDomainService) UserControllerInterface {
 	return &userControllerInterface{
-		service: service,
+		service,
 	}
 }
 
